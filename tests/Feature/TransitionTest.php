@@ -50,7 +50,7 @@ class TransitionTest extends TestCase
         ]);
 
         $this->assertTrue($response->isRedirect());
-
-        dd($response->getData());
+        $this->assertEquals(1, $response->getData()['transaction_id']);
+        $this->assertEquals(12.00, $response->getData()['amount']);
     }
 }
