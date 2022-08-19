@@ -1,0 +1,53 @@
+{
+    "name": "descom/payment-gateway",
+    "description": "Payment Gateway for Laravel App",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Descom Support",
+            "email": "soporte@descom.es",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^9.0",
+        "league/omnipay": "^3.2"
+    },
+    "require-dev": {
+        "descom/omnipay-offline-dummy": "^1.0.1",
+        "friendsofphp/php-cs-fixer": "^3.4",
+        "orchestra/testbench": "^7.5",
+        "phpstan/phpstan": "^1.2",
+        "phpunit/phpunit": "^9.3"
+    },
+    "suggest": {
+        "descom/omnipay-offline-dummy": "Required to use demo the offline gateway"
+    },
+    "autoload": {
+        "psr-4": {
+            "Descom\\Payment\\": "src",
+            "Descom\\Payment\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Descom\\Payment\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/testbench package:test --parallel --no-coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Descom\\Payment\\Gateway\\PaymentGatewayProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
