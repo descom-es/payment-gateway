@@ -8,6 +8,7 @@ use Descom\Payment\Models\PaymentModel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Omnipay\Common\AbstractGateway;
+use Omnipay\Common\GatewayInterface;
 use Omnipay\Omnipay;
 
 /**
@@ -15,7 +16,7 @@ use Omnipay\Omnipay;
  * @property string $gateway  The gateway of the payment.
  * @property string $name  The name of the payment.
  * @property array $config  The config of the payment.
- * @property PaymentModel $payment  The payment model.
+ * @property PaymentModel $paymentModel  The payment model.
  */
 class Payment
 {
@@ -40,7 +41,7 @@ class Payment
         return new TransitionBuilder($this);
     }
 
-    public function gateway(): AbstractGateway
+    public function gateway(): GatewayInterface
     {
         $gatewayClassName = $this->payment->gateway;
 

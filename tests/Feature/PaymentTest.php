@@ -14,17 +14,17 @@ class PaymentTest extends TestCase
 
     public function test_create_payment()
     {
-        $Payment = Payment::for(new OfflineDummyGateway())
+        $payment = Payment::for(new OfflineDummyGateway())
             ->name('Forma de pago 1')
             ->config([
-                'notify_url' => 'http://localhost',
+                'url_notify' => 'http://localhost',
             ])
             ->create('payment1');
 
-        $this->assertEquals('payment1', $Payment->key);
-        $this->assertEquals('Forma de pago 1', $Payment->name);
-        $this->assertEquals(OfflineDummyGateway::class, $Payment->gateway);
-        $this->assertEquals('http://localhost', $Payment->config->notify_url);
+        $this->assertEquals('payment1', $payment->key);
+        $this->assertEquals('Forma de pago 1', $payment->name);
+        $this->assertEquals(OfflineDummyGateway::class, $payment->gateway);
+        $this->assertEquals('http://localhost', $payment->config->url_notify);
     }
 
     public function test_get_gateway_by_key()
@@ -32,15 +32,15 @@ class PaymentTest extends TestCase
         Payment::for(new OfflineDummyGateway())
             ->name('Forma de pago 1')
             ->config([
-                'notify_url' => 'http://localhost',
+                'url_notify' => 'http://localhost',
             ])
             ->create('payment1');
 
-        $Payment = Payment::find('payment1');
+        $payment = Payment::find('payment1');
 
-        $this->assertEquals('payment1', $Payment->key);
-        $this->assertEquals('Forma de pago 1', $Payment->name);
-        $this->assertEquals(OfflineDummyGateway::class, $Payment->gateway);
-        $this->assertEquals('http://localhost', $Payment->config->notify_url);
+        $this->assertEquals('payment1', $payment->key);
+        $this->assertEquals('Forma de pago 1', $payment->name);
+        $this->assertEquals(OfflineDummyGateway::class, $payment->gateway);
+        $this->assertEquals('http://localhost', $payment->config->url_notify);
     }
 }

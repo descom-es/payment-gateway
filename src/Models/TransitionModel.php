@@ -5,6 +5,10 @@ namespace Descom\Payment\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property double $amount
+ * @property string $merchant_id
+ */
 class TransitionModel extends Model
 {
     protected $table = 'payment_transitions';
