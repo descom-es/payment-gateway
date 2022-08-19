@@ -4,10 +4,8 @@ namespace Descom\Payment;
 
 use Descom\Payment\Builders\TransitionBuilder;
 use Descom\Payment\Models\TransitionModel;
-use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
-use Omnipay\Omnipay;
 
 /**
  * @property int $id

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property double $amount
+ * @property float $amount
  * @property string $merchant_id
  */
 class TransitionModel extends Model
