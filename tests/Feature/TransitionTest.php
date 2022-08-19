@@ -2,9 +2,8 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Models\PaymentModel;
-use Descom\Payment\Payment;
 use Descom\Payment\Models\TransitionModel;
+use Descom\Payment\Payment;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +27,7 @@ class TransitionTest extends TestCase
             ->create('payment1');
     }
 
-    public function test_create_transition()
+    public function testCreateTransition()
     {
         $transition = Transition::for($this->payment)->create(12, 1);
 
@@ -36,14 +35,14 @@ class TransitionTest extends TestCase
         $this->assertEquals(1, $transition->merchant_id);
     }
 
-    public function test_create_model_when_create_a_transition()
+    public function testCreateModelWhenCreateATransition()
     {
         $transition = Transition::for($this->payment)->create(12, 1);
 
         $this->assertNotNull(TransitionModel::find($transition->id));
     }
 
-    public function test_purchase_transition()
+    public function testPurchaseTransition()
     {
         $response = Transition::for($this->payment)->create(12, 1)->purchase([
             'description' => 'Test purchase',

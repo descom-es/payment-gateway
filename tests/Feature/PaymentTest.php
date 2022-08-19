@@ -3,7 +3,6 @@
 namespace Descom\Payment\Tests\Feature;
 
 use Descom\Payment\Payment;
-use Descom\Payment\Services\PaymentService;
 use Descom\Payment\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Omnipay\OfflineDummy\Gateway as OfflineDummyGateway;
@@ -12,7 +11,7 @@ class PaymentTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_create_payment()
+    public function testCreatePayment()
     {
         $Payment = Payment::for(new OfflineDummyGateway())
             ->name('Forma de pago 1')
@@ -27,7 +26,7 @@ class PaymentTest extends TestCase
         $this->assertEquals('http://localhost', $Payment->config->notify_url);
     }
 
-    public function test_get_gateway_by_key()
+    public function testGetGatewayByKey()
     {
         Payment::for(new OfflineDummyGateway())
             ->name('Forma de pago 1')

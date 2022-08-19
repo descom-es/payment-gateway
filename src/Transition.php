@@ -6,7 +6,6 @@ use Descom\Payment\Builders\TransitionBuilder;
 use Descom\Payment\Models\TransitionModel;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Omnipay;
 
 final class Transition
 {
@@ -33,7 +32,8 @@ final class Transition
                     'amount' => $this->transitionModel->amount,
                     'transactionId' => $this->transitionModel->merchant_id,
                 ]
-        ))->send();
+            )
+        )->send();
     }
 
     private function gateway(): AbstractGateway
