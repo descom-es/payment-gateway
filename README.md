@@ -62,3 +62,8 @@ $transition = Transition::for($payment)->create([
     'merchant_id' => 'order_1',
 ]);
 ```
+
+## TODO
+
+- [ ] Purchase
+- [ ] Complete transaction
