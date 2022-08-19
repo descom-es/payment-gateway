@@ -3,6 +3,10 @@
 DPG is a package to Laravel that allows you to integrate the Payment Gateway into your application.
 This package use [Omnipay](https://github.com/thephpleague/omnipay) to integrate the payment gateway.
 
+[![tests](https://github.com/descom-es/payment-gateway/actions/workflows/tests.yml/badge.svg)](https://github.com/descom-es/payment-gateway/actions/workflows/tests.yml)
+[![analyze](https://github.com/descom-es/payment-gateway/actions/workflows/analyse.yml/badge.svg)](https://github.com/descom-es/payment-gateway/actions/workflows/analyse.yml)
+[![style-fix](https://github.com/descom-es/payment-gateway/actions/workflows/style-fix.yml/badge.svg)](https://github.com/descom-es/payment-gateway/actions/workflows/style-fix.yml)
+
 ## Installation
 
 ```sh
