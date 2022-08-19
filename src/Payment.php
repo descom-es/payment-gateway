@@ -5,8 +5,6 @@ namespace Descom\Payment;
 use Descom\Payment\Builders\PaymentBuilder;
 use Descom\Payment\Builders\TransitionBuilder;
 use Descom\Payment\Models\PaymentModel;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Omnipay;

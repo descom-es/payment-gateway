@@ -2,8 +2,8 @@
 
 namespace Descom\Payment\Builders;
 
-use Descom\Payment\Payment;
 use Descom\Payment\Models\PaymentModel;
+use Descom\Payment\Payment;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Omnipay\Common\AbstractGateway;
