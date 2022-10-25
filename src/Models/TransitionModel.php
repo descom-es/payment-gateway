@@ -4,6 +4,7 @@ namespace Descom\Payment\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @property float $amount
@@ -28,5 +29,10 @@ class TransitionModel extends Model
     public function payment(): BelongsTo
     {
         return $this->belongsTo(PaymentModel::class, 'payment_id', null, 'payments');
+    }
+
+    public function source(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

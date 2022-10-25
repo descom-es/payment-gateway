@@ -3,6 +3,8 @@
 namespace Descom\Payment;
 
 use Descom\Payment\Builders\TransitionBuilder;
+use Descom\Payment\Events\TransitionCompleted;
+use Descom\Payment\Events\TransitionFailed;
 use Descom\Payment\Models\TransitionModel;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
@@ -30,6 +32,7 @@ final class Transition
 
     public function purchase(array $request = []): ResponseInterface
     {
+
         return $this->gateway()->purchase(
             array_merge(
                 $request,
@@ -41,15 +44,34 @@ final class Transition
         )->send();
     }
 
-    private function gateway(): GatewayInterface
+    public function completePurchase(array $request): ResponseInterface
     {
-        $paymentKey = $this->transitionModel->payment->key;
+        $response = $this->gateway()->completePurchase($request)->send();
 
-        return Payment::find($paymentKey)->gateway();
+        $this->transitionModel->gateway_id = $response->getTransactionReference();
+        $this->transitionModel->gateway_response = $response->getData();
+        $this->transitionModel->status = $response->isSuccessful() ? 'success' : 'denied';
+
+        $this->transitionModel->save();
+
+        $event = $response->isSuccessful()
+            ? new TransitionCompleted($this->transitionModel)
+            : new TransitionFailed($this->transitionModel);
+
+        event($event);
+
+        return $response;
     }
 
     public function __get(string $param)
     {
         return $this->transitionModel->$param ?? null;
+    }
+
+    private function gateway(): GatewayInterface
+    {
+        $paymentKey = $this->transitionModel->payment->key;
+
+        return Payment::find($paymentKey)->gateway();
     }
 }

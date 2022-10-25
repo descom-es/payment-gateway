@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('payment_transitions', function (Blueprint $table) {
             $table->id();
 
+            $table->nullableMorphs('source');
+            $table->string('merchant_id')->index();
+
             $table->foreignId('payment_id')->constrained();
             $table->decimal('amount',  20, 6);
-            $table->string('merchant_id')->index();
-            $table->json('gateway_request')->nullable();
             $table->enum('status',  ['pending_payment', 'success', 'denied', 'cancelled'])->default('pending_payment');
+            $table->json('gateway_request')->nullable();
             $table->string('gateway_id')->nullable();
             $table->json('gateway_response')->nullable();
 
