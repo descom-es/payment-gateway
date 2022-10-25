@@ -32,7 +32,6 @@ final class Transition
 
     public function purchase(array $request = []): ResponseInterface
     {
-
         return $this->gateway()->purchase(
             array_merge(
                 $request,
