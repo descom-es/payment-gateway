@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+
             $table->string('key')->unique();
             $table->string('gateway');
             $table->json('config');
             $table->string('name');
+
             $table->timestamps();
         });
     }

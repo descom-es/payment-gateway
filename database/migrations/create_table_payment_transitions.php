@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('payment_transitions', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('payment_id')->constrained();
             $table->decimal('amount',  20, 6);
             $table->string('merchant_id')->index();
@@ -22,7 +23,10 @@ return new class extends Migration
             $table->enum('status',  ['pending_payment', 'success', 'denied', 'cancelled'])->default('pending_payment');
             $table->string('gateway_id')->nullable();
             $table->json('gateway_response')->nullable();
+
             $table->timestamps();
+
+            $table->unique(['payment_id', 'merchant_id']);
         });
     }
 

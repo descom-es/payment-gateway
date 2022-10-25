@@ -27,6 +27,11 @@ class Payment
         return new PaymentBuilder($gateway);
     }
 
+    public static function exists(string $key): bool
+    {
+        return PaymentModel::where('key', $key)->exists();
+    }
+
     public static function find(string $key): Payment
     {
         $payment = PaymentModel::where('key', $key)->firstOrFail();
