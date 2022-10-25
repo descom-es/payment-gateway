@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 /**
  * @property float $amount
  * @property string $merchant_id
+ * @property string $status
+ * @property string $gateway_id
+ * @property object $gateway_response
  */
 class TransitionModel extends Model
 {
