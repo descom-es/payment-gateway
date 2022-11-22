@@ -62,3 +62,7 @@ $transition = Transition::for($payment)->create([
     'merchant_id' => 'order_1',
 ]);
 ```
+
+## Capture Notification
+
+Create Listener to event `Descom\Payment\Events\NotificationReceived`
