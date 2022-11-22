@@ -2,7 +2,7 @@
 
 namespace Descom\Payment\Models;
 
-trait hasTransition
+trait HasTransition
 {
     public function transitions(): HasMany
     {
