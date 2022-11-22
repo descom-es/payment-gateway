@@ -14,7 +14,6 @@ use Omnipay\Omnipay;
  * @property string $gateway  The gateway of the payment.
  * @property string $name  The name of the payment.
  * @property array $config  The config of the payment.
- * @property PaymentModel $paymentModel  The payment model.
  */
 class Payment
 {
@@ -63,8 +62,8 @@ class Payment
         return $this->payment->$key ?? null;
     }
 
-    private function objectToArray(object $object): array
+    private function objectToArray(array|object $object): array
     {
-        return json_decode(json_encode($object), true);
+        return is_array($object) ? $object : json_decode(json_encode($object), true);
     }
 }

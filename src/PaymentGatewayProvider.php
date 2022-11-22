@@ -15,6 +15,8 @@ class PaymentGatewayProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
               __DIR__.'/../config/config.php' => config_path('descommarket_payment.php'),

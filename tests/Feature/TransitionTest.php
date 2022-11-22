@@ -24,10 +24,6 @@ class TransitionTest extends TestCase
         parent::setUp();
 
         $this->payment = Payment::for(new OfflineDummyGateway())
-            ->config([
-                'notify_url' => 'http://localhost/payment/notify',
-                'return_url' => 'http://localhost/checkout/return',
-            ])
             ->create('payment1');
     }
 
@@ -67,7 +63,7 @@ class TransitionTest extends TestCase
             'description' => 'Test purchase',
         ]);
 
-        $transition->completePurchase([
+        $transition->notifyPurchase([
             'transaction_id' => 1,
             'amount' => 12.00,
         ]);
@@ -88,7 +84,7 @@ class TransitionTest extends TestCase
             'description' => 'Test purchase',
         ]);
 
-        $transition->completePurchase([
+        $transition->notifyPurchase([
             'transaction_id' => 1,
             'amount' => 12.00,
             'status' => App::STATUS_SUCCESS,
