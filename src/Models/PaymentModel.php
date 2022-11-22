@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property PaymentModel $payment The payment model.
  * @property ?string $url_redirect_client_completed
  * @property ?string $url_redirect_client_failed
- * @property ?string $key_url_notify
+ * @property ?string $key_notify_url
  */
 class PaymentModel extends Model
 {

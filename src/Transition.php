@@ -49,19 +49,19 @@ final class Transition
     {
         return $this->gateway()->completePurchase($request)->send();
 
-        $this->transitionModel->gateway_id = $response->getTransactionReference();
-        $this->transitionModel->gateway_response = $response->getData();
-        $this->transitionModel->status = $response->isSuccessful() ? 'success' : 'denied';
+        // $this->transitionModel->gateway_id = $response->getTransactionReference();
+        // $this->transitionModel->gateway_response = $response->getData();
+        // $this->transitionModel->status = $response->isSuccessful() ? 'success' : 'denied';
 
-        $this->transitionModel->save();
+        // $this->transitionModel->save();
 
-        $event = $response->isSuccessful()
-            ? new TransitionCompleted($this->transitionModel)
-            : new TransitionFailed($this->transitionModel);
+        // $event = $response->isSuccessful()
+        //     ? new TransitionCompleted($this->transitionModel)
+        //     : new TransitionFailed($this->transitionModel);
 
-        event($event);
+        // event($event);
 
-        return $response;
+        // return $response;
     }
 
     public function notifyPurchase(array $request): ResponseInterface

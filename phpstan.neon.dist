@@ -11,8 +11,3 @@ parameters:
     level: 5
 
     checkMissingIterableValueType: false
-
-    ignoreErrors:
-        -
-            message: '#Cannot access property \$url_notify on array#'
-            path: tests/*
