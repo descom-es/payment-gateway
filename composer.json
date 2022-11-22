@@ -46,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Descom\\Payment\\Gateway\\PaymentGatewayProvider"
+                "Descom\\Payment\\PaymentGatewayProvider"
             ]
         }
     },
