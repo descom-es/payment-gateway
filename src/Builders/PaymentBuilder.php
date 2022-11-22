@@ -68,7 +68,7 @@ final class PaymentBuilder
                 'required',
                 'unique:payments,key',
                 'min:3',
-                'regex:/^[a-zA-Z0-9]+$/',
+                'regex:/^[a-zA-Z0-9_]+$/',
             ],
             'name' => 'required|min:3',
             'config' => 'array',
