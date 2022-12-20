@@ -18,9 +18,6 @@ return new class extends Migration
 
             $table->string('key')->unique();
             $table->string('gateway');
-            $table->string('url_redirect_client_completed')->nullable();
-            $table->string('url_redirect_client_failed')->nullable();
-            $table->string('key_notify_url')->nullable();
             $table->json('config');
             $table->string('name');
 

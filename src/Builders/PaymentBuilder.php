@@ -12,10 +12,6 @@ final class PaymentBuilder
 {
     private string $name = '';
 
-    private ?string $keyUrlNotify = null;
-    private ?string $urlRedirectClientCompleted = null;
-    private ?string $urlRedirectClientFailed = null;
-
     private array $config = [];
 
     public function __construct(private AbstractGateway $gateway)
@@ -36,21 +32,6 @@ final class PaymentBuilder
         return $this;
     }
 
-    public function keyUrlNotify(string $keyUrlNotify): PaymentBuilder
-    {
-        $this->keyUrlNotify = $keyUrlNotify;
-
-        return $this;
-    }
-
-    public function redirectClientTo(string $urlCompleted, string $urlFailed): PaymentBuilder
-    {
-        $this->urlRedirectClientCompleted = $urlCompleted;
-        $this->urlRedirectClientFailed = $urlFailed;
-
-        return $this;
-    }
-
     public function create(string $key): Payment
     {
         $request = [
@@ -58,9 +39,6 @@ final class PaymentBuilder
             'name' => $this->name ?: $key,
             'config' => $this->config,
             'gateway' => $this->gateway::class,
-            'url_redirect_client_completed' => $this->urlRedirectClientCompleted,
-            'url_redirect_client_failed' => $this->urlRedirectClientFailed,
-            'key_notify_url' => $this->keyUrlNotify,
         ];
 
         $validator = Validator::make($request, [

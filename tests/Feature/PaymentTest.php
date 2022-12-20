@@ -16,16 +16,19 @@ class PaymentTest extends TestCase
     {
         $payment = Payment::for(new OfflineDummyGateway())
             ->name('Forma de pago 1')
-            ->redirectClientTo('http://localhost/completed', 'http://localhost/failed')
-            ->keyUrlNotify('url_notify')
+            ->config([
+                'notify_url' => 'http://localhost/notify',
+                'return_url' => 'http://localhost/completed',
+                'cancel_url' => 'http://localhost/failed',
+            ])
             ->create('payment1');
 
         $this->assertEquals('payment1', $payment->key);
         $this->assertEquals('Forma de pago 1', $payment->name);
         $this->assertEquals(OfflineDummyGateway::class, $payment->gateway);
-        $this->assertEquals('http://localhost/completed', $payment->url_redirect_client_completed);
-        $this->assertEquals('http://localhost/failed', $payment->url_redirect_client_failed);
-        $this->assertEquals('url_notify', $payment->key_notify_url);
+        $this->assertEquals('http://localhost/notify', $payment->config->notify_url);
+        $this->assertEquals('http://localhost/completed', $payment->config->return_url);
+        $this->assertEquals('http://localhost/failed', $payment->config->cancel_url);
     }
 
     public function testGetGatewayByKey()

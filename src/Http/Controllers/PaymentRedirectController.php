@@ -14,12 +14,12 @@ class PaymentRedirectController extends Controller
 
         $response = $transition->redirectPurchase($request->all());
 
-        if ($response->isSuccessful() && $transition->payment->url_redirect_client_completed) {
-            return redirect()->away($transition->payment->url_redirect_client_completed);
+        if ($response->isSuccessful() && $transition->payment->config->return_url) {
+            return redirect()->away($transition->payment->config->return_url);
         }
 
-        if (! $response->isSuccessful() && $transition->payment->url_redirect_client_failed) {
-            return redirect()->away($transition->payment->url_redirect_client_failed);
+        if (! $response->isSuccessful() && $transition->payment->config->cancel_url) {
+            return redirect()->away($transition->payment->config->cancel_url);
         }
 
         return response()->noContent();
