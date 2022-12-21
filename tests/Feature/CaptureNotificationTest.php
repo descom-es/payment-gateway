@@ -42,7 +42,7 @@ class CaptureNotificationTest extends TestCase
         $this->post(
             '/payment/payment1/notify',
             array_merge(
-                $redirect->getRedirectData(),
+                $redirect->getData(),
                 [
                     'status' => App::STATUS_SUCCESS,
                 ]
@@ -68,7 +68,7 @@ class CaptureNotificationTest extends TestCase
         $this->post(
             '/payment/payment1/notify',
             array_merge(
-                $redirect->getRedirectData(),
+                $redirect->getData(),
                 [
                     'status' => App::STATUS_DENIED,
                 ]

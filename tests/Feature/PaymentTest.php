@@ -26,9 +26,9 @@ class PaymentTest extends TestCase
         $this->assertEquals('payment1', $payment->key);
         $this->assertEquals('Forma de pago 1', $payment->name);
         $this->assertEquals(OfflineDummyGateway::class, $payment->gateway);
-        $this->assertEquals('http://localhost/notify', $payment->config->notify_url);
-        $this->assertEquals('http://localhost/completed', $payment->config->return_url);
-        $this->assertEquals('http://localhost/failed', $payment->config->cancel_url);
+        $this->assertEquals('http://localhost/notify', $payment->config->notify_url); // @phpstan-ignore-line
+        $this->assertEquals('http://localhost/completed', $payment->config->return_url); // @phpstan-ignore-line
+        $this->assertEquals('http://localhost/failed', $payment->config->cancel_url); // @phpstan-ignore-line
     }
 
     public function testGetGatewayByKey()
