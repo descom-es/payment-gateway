@@ -92,6 +92,16 @@ final class Transition
         return $this->transitionModel->$param ?? null;
     }
 
+    public function isSuccessful(): bool
+    {
+        return $this->transitionModel->isSuccessful();
+    }
+
+    public function isDenied(): bool
+    {
+        return $this->transitionModel->isDenied();
+    }
+
     private function gateway(): GatewayInterface
     {
         $paymentKey = $this->transitionModel->payment->key;

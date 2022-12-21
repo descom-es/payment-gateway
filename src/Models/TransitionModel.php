@@ -38,4 +38,14 @@ class TransitionModel extends Model
     {
         return $this->morphTo();
     }
+
+    public function isSuccessful(): bool
+    {
+        return $this->status === 'success';
+    }
+
+    public function isDenied(): bool
+    {
+        return $this->status === 'denied';
+    }
 }
