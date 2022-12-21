@@ -28,6 +28,8 @@ class TransitionModel extends Model
         'amount',
         'merchant_id',
         'gateway_request',
+        'source_type',
+        'source_id',
     ];
 
     public function payment(): BelongsTo

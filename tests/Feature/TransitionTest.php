@@ -6,6 +6,7 @@ use Descom\Payment\Events\TransitionCompleted;
 use Descom\Payment\Events\TransitionFailed;
 use Descom\Payment\Models\TransitionModel;
 use Descom\Payment\Payment;
+use Descom\Payment\Tests\Support\OrderModel;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,6 +46,16 @@ class TransitionTest extends TestCase
         $transition = Transition::for($this->payment)->create(12, 1);
 
         $this->assertNotNull(TransitionModel::find($transition->id));
+    }
+
+    public function testCreateModelWithSource()
+    {
+        $transition = Transition::for($this->payment)
+            ->model(new OrderModel)
+            ->create(12, 1);
+
+        $this->assertEquals(OrderModel::class, $transition->source_type); // @phpstan-ignore-line
+        $this->assertEquals((new OrderModel())->getKey(), $transition->id);
     }
 
     public function testPurchaseTransition()
