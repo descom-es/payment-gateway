@@ -8,9 +8,9 @@ use Illuminate\Routing\Controller;
 
 class PaymentRedirectController extends Controller
 {
-    public function __invoke(Request $request, int $id)
+    public function __invoke(Request $request, $id)
     {
-        $transition = Transition::find($id);
+        $transition = Transition::find((int)$id);
 
         $response = $transition->redirectPurchase($request->all());
 
