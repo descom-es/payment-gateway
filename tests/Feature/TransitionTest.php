@@ -74,7 +74,7 @@ class TransitionTest extends TestCase
             'amount' => 12.00,
         ]);
 
-       $this->assertNotEmpty(TransitionModel::find(1)->gateway_request);
+        $this->assertNotEmpty(TransitionModel::find(1)->gateway_request);
     }
 
     public function testPurchaseCompletedFailed()
