@@ -24,6 +24,11 @@ class TransitionTest extends TestCase
         parent::setUp();
 
         $this->payment = Payment::for(new OfflineDummyGateway())
+            ->config([
+                'request' => [
+                    'url_notify' => 'https://ok.makey',
+                ],
+            ])
             ->create('payment1');
     }
 
@@ -51,6 +56,7 @@ class TransitionTest extends TestCase
         $this->assertTrue($response->isRedirect());
         $this->assertEquals(1, $response->getData()['transaction_id']);
         $this->assertEquals(12.00, $response->getData()['amount']);
+        $this->assertEquals('https://ok.makey', $response->getData()['url_notify']);
     }
 
     public function testPurchaseCompletedFailed()

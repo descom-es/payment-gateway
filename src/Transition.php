@@ -33,16 +33,20 @@ final class Transition
 
     public function purchase(array $request = []): ResponseInterface
     {
-        return $this->gateway()->purchase(
-            array_merge(
-                $request,
-                [
-                    $this->transitionModel->payment->key_notify_url => url('/payment/notify/' . $this->transitionModel->id), // TODO este campo es opcional
-                    'amount' => $this->transitionModel->amount,
-                    'transactionId' => $this->transitionModel->merchant_id,
-                ]
-            )
-        )->send();
+        $paymentRequest = isset($this->payment->config->request)
+            ? json_decode(json_encode($this->payment->config->request), true)
+            : [];
+
+        $data = array_merge(
+            $request,
+            $paymentRequest,
+            [
+                'amount' => $this->transitionModel->amount,
+                'transactionId' => $this->transitionModel->merchant_id,
+            ]
+        );
+
+        return $this->gateway()->purchase($data)->send();
     }
 
     public function redirectPurchase(array $request): ResponseInterface
