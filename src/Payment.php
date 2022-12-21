@@ -15,9 +15,6 @@ use Omnipay\Omnipay;
  * @property string $name  The name of the payment.
  * @property array $config  The config of the payment.
  * @property PaymentModel $paymentModel  The payment model.
- * @property ?string $url_redirect_client_completed
- * @property ?string $url_redirect_client_failed
- * @property ?string $key_notify_url
  */
 class Payment
 {

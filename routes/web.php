@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::match(
     ['get', 'post'],
-    '/payment/{id}/notify',
+    '/payment/{payment_key}/notify',
     PaymentNotificationController::class
 )->name('payment.notify');
 

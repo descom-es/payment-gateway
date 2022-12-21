@@ -8,9 +8,9 @@ use Illuminate\Routing\Controller;
 
 class PaymentNotificationController extends Controller
 {
-    public function __invoke(Request $request, int $id)
+    public function __invoke(Request $request, string $payment_key)
     {
-        Transition::find($id)->notifyPurchase($request->all());
+        Transition::find($request->input('transition_id'))->notifyPurchase($request->all());
 
         return response()->noContent();
     }
