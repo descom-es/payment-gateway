@@ -9,6 +9,7 @@ use Descom\Payment\Payment;
 use Descom\Payment\Tests\Support\OrderModel;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transition;
+use Descom\Payment\TransitionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Omnipay\OfflineDummy\App\App;
@@ -105,7 +106,7 @@ class TransitionTest extends TestCase
 
         Event::assertDispatched(
             TransitionFailed::class,
-            fn (TransitionFailed $event) => $event->transitionModel()->status === 'denied'
+            fn (TransitionFailed $event) => $event->transitionModel()->status === TransitionStatus::DENIED
         );
     }
 
@@ -127,7 +128,7 @@ class TransitionTest extends TestCase
 
         Event::assertDispatched(
             TransitionCompleted::class,
-            fn (TransitionCompleted $event) => $event->transitionModel()->status === 'success'
+            fn (TransitionCompleted $event) => $event->transitionModel()->status === TransitionStatus::PAID
         );
     }
 }

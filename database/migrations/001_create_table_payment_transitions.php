@@ -1,5 +1,6 @@
 <?php
 
+use Descom\Payment\TransitionStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,14 @@ return new class extends Migration
 
             $table->foreignId('payment_id')->constrained();
             $table->decimal('amount',  20, 6);
-            $table->enum('status',  ['pending_payment', 'success', 'denied', 'cancelled'])->default('pending_payment');
+
+            $table->enum('status',  [
+                TransitionStatus::PENDING,
+                TransitionStatus::PAID,
+                TransitionStatus::DENIED,
+                TransitionStatus::VOIDED,
+            ])->default(TransitionStatus::PENDING);
+
             $table->json('gateway_request')->nullable();
             $table->string('gateway_id')->nullable();
             $table->json('gateway_response')->nullable();

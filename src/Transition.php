@@ -62,7 +62,9 @@ final class Transition
 
         $this->transitionModel->gateway_id = $response->getTransactionReference();
         $this->transitionModel->gateway_response = $response->getData();
-        $this->transitionModel->status = $response->isSuccessful() ? 'success' : 'denied';
+        $this->transitionModel->status = $response->isSuccessful()
+            ? TransitionStatus::PAID :
+            TransitionStatus::DENIED;
 
         $this->transitionModel->save();
 

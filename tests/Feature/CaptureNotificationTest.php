@@ -7,6 +7,7 @@ use Descom\Payment\Events\TransitionFailed;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transition;
+use Descom\Payment\TransitionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Omnipay\OfflineDummy\App\App;
@@ -51,7 +52,7 @@ class CaptureNotificationTest extends TestCase
 
         Event::assertDispatched(TransitionCompleted::class, function ($event) {
             return $event->transitionModel()->id === 1
-                && $event->transitionModel()->status === 'success';
+                && $event->transitionModel()->status === TransitionStatus::PAID;
         });
 
         $this->assertTrue(Transition::find(1)->isSuccessful());
@@ -77,7 +78,7 @@ class CaptureNotificationTest extends TestCase
 
         Event::assertDispatched(TransitionFailed::class, function ($event) {
             return $event->transitionModel()->id === 1
-                && $event->transitionModel()->status === 'denied';
+                && $event->transitionModel()->status === TransitionStatus::DENIED;
         });
 
         $this->assertTrue(Transition::find(1)->isDenied());

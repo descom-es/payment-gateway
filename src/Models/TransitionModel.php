@@ -2,6 +2,7 @@
 
 namespace Descom\Payment\Models;
 
+use Descom\Payment\TransitionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -44,11 +45,11 @@ class TransitionModel extends Model
 
     public function isSuccessful(): bool
     {
-        return $this->status === 'success';
+        return $this->status === TransitionStatus::PAID;
     }
 
     public function isDenied(): bool
     {
-        return $this->status === 'denied';
+        return $this->status === TransitionStatus::DENIED;
     }
 }
