@@ -65,4 +65,7 @@ $transition = Transition::for($payment)->create([
 
 ## Capture Notification
 
-Create Listener to event `Descom\Payment\Events\NotificationReceived`
+Create Listener to events:
+
+- `Descom\Payment\Events\TransitionCompleted`
+- `Descom\Payment\Events\TransitionFailed`
