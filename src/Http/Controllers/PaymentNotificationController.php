@@ -10,7 +10,11 @@ class PaymentNotificationController extends Controller
 {
     public function __invoke(Request $request, string $payment_key)
     {
-        Transition::find($request->input('transition_id'))->notifyPurchase($request->all());
+        $transactionId = (int)$request->input('transaction_id');
+
+        logger()->info('transition notification', $request->all());
+
+        Transition::find($transactionId)->notifyPurchase($request->all());
 
         return response()->noContent();
     }
