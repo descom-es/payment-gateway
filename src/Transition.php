@@ -42,7 +42,7 @@ final class Transition
             $paymentRequest,
             [
                 'amount' => $this->transitionModel->amount,
-                'transactionId' => $this->transitionModel->merchant_id,
+                'transactionId' => $this->transitionModel->id,
             ]
         );
 
