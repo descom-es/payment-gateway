@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property float $amount
  * @property string $merchant_id
  * @property string $status
+ * @property object|array $gateway_request
  * @property string $gateway_id
  * @property object $gateway_response
  */
@@ -19,7 +20,7 @@ class TransitionModel extends Model
 
     protected $casts = [
         'amount' => 'double',
-        'gateway_request' => 'array',
+        'gateway_request' => 'object',
         'gateway_response' => 'object',
     ];
 

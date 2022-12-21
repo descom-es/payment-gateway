@@ -59,6 +59,24 @@ class TransitionTest extends TestCase
         $this->assertEquals('https://ok.makey', $response->getData()['url_notify']);
     }
 
+    public function testPurchaseFillRequestInModel()
+    {
+        Event::fake();
+
+        $transition = Transition::for($this->payment)->create(12, 1);
+
+        $transition->purchase([
+            'description' => 'Test purchase',
+        ]);
+
+        $transition->notifyPurchase([
+            'transaction_id' => 1,
+            'amount' => 12.00,
+        ]);
+
+       $this->assertNotEmpty(TransitionModel::find(1)->gateway_request);
+    }
+
     public function testPurchaseCompletedFailed()
     {
         Event::fake();
