@@ -41,7 +41,7 @@ jobs:
           ${{ runner.os }}-php-${{ matrix.php-versions }}-
 
     - name: Install dependencies
-      # if: steps.composer-cache.outputs.cache-hit != 'true'
+      if: steps.composer-cache.outputs.cache-hit != 'true'
       run: |
         composer install
         composer dump
