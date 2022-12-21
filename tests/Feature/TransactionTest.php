@@ -2,8 +2,8 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Events\TransactionPaid;
 use Descom\Payment\Events\TransactionDenied;
+use Descom\Payment\Events\TransactionPaid;
 use Descom\Payment\Models\TransactionModel;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\Support\OrderModel;

@@ -3,8 +3,8 @@
 namespace Descom\Payment;
 
 use Descom\Payment\Builders\TransactionBuilder;
-use Descom\Payment\Events\TransactionPaid;
 use Descom\Payment\Events\TransactionDenied;
+use Descom\Payment\Events\TransactionPaid;
 use Descom\Payment\Models\TransactionModel;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
