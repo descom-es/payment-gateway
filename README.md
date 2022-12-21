@@ -63,6 +63,25 @@ $transition = Transition::for($payment)->create([
 ]);
 ```
 
+You optionally can add a relation of a external model:
+
+```php
+<?php
+use Descom\Payment\Payment;
+use Descom\Payment\Transition;
+
+$payment = Payment::find('paymentdemo');
+
+$transition = Transition::for($payment)
+    ->model(Order::find(1))
+    ->create([
+        'amount' => '10.00',
+        'merchant_id' => 'order_1',
+    ]);
+```
+
+```php
+
 ## Capture Notification
 
 Create Listener to events:
