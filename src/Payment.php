@@ -3,7 +3,7 @@
 namespace Descom\Payment;
 
 use Descom\Payment\Builders\PaymentBuilder;
-use Descom\Payment\Builders\TransitionBuilder;
+use Descom\Payment\Builders\TransactionBuilder;
 use Descom\Payment\Models\PaymentModel;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\GatewayInterface;
@@ -39,9 +39,9 @@ class Payment
         return new Payment($payment);
     }
 
-    public function transitionBuilder(): TransitionBuilder
+    public function transactionBuilder(): TransactionBuilder
     {
-        return new TransitionBuilder($this);
+        return new TransactionBuilder($this);
     }
 
     public function gateway(): GatewayInterface

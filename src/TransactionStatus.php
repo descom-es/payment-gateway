@@ -2,7 +2,7 @@
 
 namespace Descom\Payment;
 
-final class TransitionStatus
+final class TransactionStatus
 {
     public const PENDING = 'pending';
     public const PAID = 'paid';

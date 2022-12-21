@@ -33,8 +33,8 @@ class PaymentModel extends Model
         'url_redirect_client_failed',
     ];
 
-    public function transitions(): HasMany
+    public function transactions(): HasMany
     {
-        return $this->hasMany(TransitionModel::class, 'payment_id');
+        return $this->hasMany(TransactionModel::class, 'payment_id');
     }
 }

@@ -2,20 +2,20 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Events\TransitionCompleted;
-use Descom\Payment\Events\TransitionFailed;
-use Descom\Payment\Models\TransitionModel;
+use Descom\Payment\Events\TransactionCompleted;
+use Descom\Payment\Events\TransactionFailed;
+use Descom\Payment\Models\TransactionModel;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\Support\OrderModel;
 use Descom\Payment\Tests\TestCase;
-use Descom\Payment\Transition;
-use Descom\Payment\TransitionStatus;
+use Descom\Payment\Transaction;
+use Descom\Payment\TransactionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Omnipay\OfflineDummy\App\App;
 use Omnipay\OfflineDummy\Gateway as OfflineDummyGateway;
 
-class TransitionTest extends TestCase
+class TransactionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -34,34 +34,34 @@ class TransitionTest extends TestCase
             ->create('payment1');
     }
 
-    public function testCreateTransition()
+    public function testCreateTransaction()
     {
-        $transition = Transition::for($this->payment)->create(12, 1);
+        $transaction = Transaction::for($this->payment)->create(12, 1);
 
-        $this->assertEquals(12, $transition->amount);
-        $this->assertEquals(1, $transition->merchant_id);
+        $this->assertEquals(12, $transaction->amount);
+        $this->assertEquals(1, $transaction->merchant_id);
     }
 
-    public function testCreateModelWhenCreateATransition()
+    public function testCreateModelWhenCreateATransaction()
     {
-        $transition = Transition::for($this->payment)->create(12, 1);
+        $transaction = Transaction::for($this->payment)->create(12, 1);
 
-        $this->assertNotNull(TransitionModel::find($transition->id));
+        $this->assertNotNull(TransactionModel::find($transaction->id));
     }
 
     public function testCreateModelWithRelation()
     {
-        $transition = Transition::for($this->payment)
+        $transaction = Transaction::for($this->payment)
             ->model(new OrderModel())
             ->create(12, 1);
 
-        $this->assertEquals(OrderModel::class, $transition->model_type); // @phpstan-ignore-line
-        $this->assertEquals((new OrderModel())->getKey(), $transition->id);
+        $this->assertEquals(OrderModel::class, $transaction->model_type); // @phpstan-ignore-line
+        $this->assertEquals((new OrderModel())->getKey(), $transaction->id);
     }
 
-    public function testPurchaseTransition()
+    public function testPurchaseTransaction()
     {
-        $response = Transition::for($this->payment)->create(12, 1)->purchase([
+        $response = Transaction::for($this->payment)->create(12, 1)->purchase([
             'description' => 'Test purchase',
         ]);
 
@@ -75,38 +75,38 @@ class TransitionTest extends TestCase
     {
         Event::fake();
 
-        $transition = Transition::for($this->payment)->create(12, 1);
+        $transaction = Transaction::for($this->payment)->create(12, 1);
 
-        $transition->purchase([
+        $transaction->purchase([
             'description' => 'Test purchase',
         ]);
 
-        $transition->notifyPurchase([
+        $transaction->notifyPurchase([
             'transaction_id' => 1,
             'amount' => 12.00,
         ]);
 
-        $this->assertNotEmpty(TransitionModel::find(1)->gateway_request);
+        $this->assertNotEmpty(TransactionModel::find(1)->gateway_request);
     }
 
     public function testPurchaseCompletedFailed()
     {
         Event::fake();
 
-        $transition = Transition::for($this->payment)->create(12, 1);
+        $transaction = Transaction::for($this->payment)->create(12, 1);
 
-        $transition->purchase([
+        $transaction->purchase([
             'description' => 'Test purchase',
         ]);
 
-        $transition->notifyPurchase([
+        $transaction->notifyPurchase([
             'transaction_id' => 1,
             'amount' => 12.00,
         ]);
 
         Event::assertDispatched(
-            TransitionFailed::class,
-            fn (TransitionFailed $event) => $event->transitionModel()->status === TransitionStatus::DENIED
+            TransactionFailed::class,
+            fn (TransactionFailed $event) => $event->transactionModel()->status === TransactionStatus::DENIED
         );
     }
 
@@ -114,21 +114,21 @@ class TransitionTest extends TestCase
     {
         Event::fake();
 
-        $transition = Transition::for($this->payment)->create(12, 1);
+        $transaction = Transaction::for($this->payment)->create(12, 1);
 
-        $transition->purchase([
+        $transaction->purchase([
             'description' => 'Test purchase',
         ]);
 
-        $transition->notifyPurchase([
+        $transaction->notifyPurchase([
             'transaction_id' => 1,
             'amount' => 12.00,
             'status' => App::STATUS_SUCCESS,
         ]);
 
         Event::assertDispatched(
-            TransitionCompleted::class,
-            fn (TransitionCompleted $event) => $event->transitionModel()->status === TransitionStatus::PAID
+            TransactionCompleted::class,
+            fn (TransactionCompleted $event) => $event->transactionModel()->status === TransactionStatus::PAID
         );
     }
 }

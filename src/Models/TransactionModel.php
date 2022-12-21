@@ -2,7 +2,7 @@
 
 namespace Descom\Payment\Models;
 
-use Descom\Payment\TransitionStatus;
+use Descom\Payment\TransactionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -15,9 +15,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $gateway_id
  * @property object $gateway_response
  */
-class TransitionModel extends Model
+class TransactionModel extends Model
 {
-    protected $table = 'payment_transitions';
+    protected $table = 'payment_transactions';
 
     protected $casts = [
         'amount' => 'double',
@@ -45,11 +45,11 @@ class TransitionModel extends Model
 
     public function isSuccessful(): bool
     {
-        return $this->status === TransitionStatus::PAID;
+        return $this->status === TransactionStatus::PAID;
     }
 
     public function isDenied(): bool
     {
-        return $this->status === TransitionStatus::DENIED;
+        return $this->status === TransactionStatus::DENIED;
     }
 }

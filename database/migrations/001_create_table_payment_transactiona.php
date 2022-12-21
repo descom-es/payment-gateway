@@ -1,6 +1,6 @@
 <?php
 
-use Descom\Payment\TransitionStatus;
+use Descom\Payment\TransactionStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payment_transitions', function (Blueprint $table) {
+        Schema::create('payment_transactions', function (Blueprint $table) {
             $table->id();
 
             $table->nullableMorphs('model');
@@ -24,11 +24,11 @@ return new class extends Migration
             $table->decimal('amount',  20, 6);
 
             $table->enum('status',  [
-                TransitionStatus::PENDING,
-                TransitionStatus::PAID,
-                TransitionStatus::DENIED,
-                TransitionStatus::VOIDED,
-            ])->default(TransitionStatus::PENDING);
+                TransactionStatus::PENDING,
+                TransactionStatus::PAID,
+                TransactionStatus::DENIED,
+                TransactionStatus::VOIDED,
+            ])->default(TransactionStatus::PENDING);
 
             $table->json('gateway_request')->nullable();
             $table->string('gateway_id')->nullable();
@@ -47,6 +47,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('payments');
+        Schema::drop('payment_transactions');
     }
 };

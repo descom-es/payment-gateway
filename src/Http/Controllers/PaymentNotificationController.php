@@ -2,7 +2,7 @@
 
 namespace Descom\Payment\Http\Controllers;
 
-use Descom\Payment\Transition;
+use Descom\Payment\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,7 +12,7 @@ class PaymentNotificationController extends Controller
     {
         $transactionId = (int)$request->input('transaction_id');
 
-        Transition::find($transactionId)->notifyPurchase($request->all());
+        Transaction::find($transactionId)->notifyPurchase($request->all());
 
         return response()->noContent();
     }
