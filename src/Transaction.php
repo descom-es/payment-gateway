@@ -2,10 +2,10 @@
 
 namespace Descom\Payment;
 
-use Descom\Payment\Builders\TransitionBuilder;
-use Descom\Payment\Events\TransitionCompleted;
-use Descom\Payment\Events\TransitionFailed;
-use Descom\Payment\Models\TransitionModel;
+use Descom\Payment\Builders\TransactionBuilder;
+use Descom\Payment\Events\TransactionPaid;
+use Descom\Payment\Events\TransactionDenied;
+use Descom\Payment\Models\TransactionModel;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
 
@@ -15,20 +15,20 @@ use Omnipay\Common\Message\ResponseInterface;
  * @property string $merchant_id
  * @property \Descom\Payment\Models\PaymentModel $payment  Retrieve payment model
  */
-final class Transition
+final class Transaction
 {
-    public function __construct(private TransitionModel $transitionModel)
+    public function __construct(private TransactionModel $transactionModel)
     {
     }
 
-    public static function for(Payment $payment): TransitionBuilder
+    public static function for(Payment $payment): TransactionBuilder
     {
-        return new TransitionBuilder($payment);
+        return new TransactionBuilder($payment);
     }
 
-    public static function find(int $id): Transition
+    public static function find(int $id): Transaction
     {
-        return new Transition(TransitionModel::with('payment')->findOrFail($id));
+        return new Transaction(TransactionModel::with('payment')->findOrFail($id));
     }
 
     public function purchase(array $request = []): ResponseInterface
@@ -41,12 +41,12 @@ final class Transition
             $request,
             $paymentRequest,
             [
-                'amount' => $this->transitionModel->amount,
-                'transactionId' => $this->transitionModel->id,
+                'amount' => $this->transactionModel->amount,
+                'transactionId' => $this->transactionModel->id,
             ]
         );
 
-        $this->transitionModel->gateway_request = $data;
+        $this->transactionModel->gateway_request = $data;
 
         return $this->gateway()->purchase($data)->send();
     }
@@ -60,15 +60,17 @@ final class Transition
     {
         $response = $this->redirectPurchase($request);
 
-        $this->transitionModel->gateway_id = $response->getTransactionReference();
-        $this->transitionModel->gateway_response = $response->getData();
-        $this->transitionModel->status = $response->isSuccessful() ? 'success' : 'denied';
+        $this->transactionModel->gateway_id = $response->getTransactionReference();
+        $this->transactionModel->gateway_response = $response->getData();
+        $this->transactionModel->status = $response->isSuccessful()
+            ? TransactionStatus::PAID :
+            TransactionStatus::DENIED;
 
-        $this->transitionModel->save();
+        $this->transactionModel->save();
 
         $event = $response->isSuccessful()
-            ? new TransitionCompleted($this->transitionModel)
-            : new TransitionFailed($this->transitionModel);
+            ? new TransactionPaid($this->transactionModel)
+            : new TransactionDenied($this->transactionModel);
 
         event($event);
 
@@ -77,22 +79,22 @@ final class Transition
 
     public function __get(string $param)
     {
-        return $this->transitionModel->$param ?? null;
+        return $this->transactionModel->$param ?? null;
     }
 
     public function isSuccessful(): bool
     {
-        return $this->transitionModel->isSuccessful();
+        return $this->transactionModel->isSuccessful();
     }
 
     public function isDenied(): bool
     {
-        return $this->transitionModel->isDenied();
+        return $this->transactionModel->isDenied();
     }
 
     private function gateway(): GatewayInterface
     {
-        $paymentKey = $this->transitionModel->payment->key;
+        $paymentKey = $this->transactionModel->payment->key;
 
         return Payment::find($paymentKey)->gateway();
     }

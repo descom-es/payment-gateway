@@ -53,11 +53,11 @@ $payment = Payment::find('paymentdemo');
 ```php
 <?php
 use Descom\Payment\Payment;
-use Descom\Payment\Transition;
+use Descom\Payment\Transaction;
 
 $payment = Payment::find('paymentdemo');
 
-$transition = Transition::for($payment)->create([
+$transaction = Transaction::for($payment)->create([
     'amount' => '10.00',
     'merchant_id' => 'order_1',
 ]);
@@ -68,11 +68,11 @@ You optionally can add a relation of a external model:
 ```php
 <?php
 use Descom\Payment\Payment;
-use Descom\Payment\Transition;
+use Descom\Payment\Transaction;
 
 $payment = Payment::find('paymentdemo');
 
-$transition = Transition::for($payment)
+$transaction = Transaction::for($payment)
     ->model(Order::find(1))
     ->create([
         'amount' => '10.00',
@@ -86,5 +86,5 @@ $transition = Transition::for($payment)
 
 Create Listener to events:
 
-- `Descom\Payment\Events\TransitionCompleted`
-- `Descom\Payment\Events\TransitionFailed`
+- `Descom\Payment\Events\TransactionPaid`
+- `Descom\Payment\Events\TransactionDenied`

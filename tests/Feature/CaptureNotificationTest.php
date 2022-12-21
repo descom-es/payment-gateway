@@ -2,11 +2,12 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Events\TransitionCompleted;
-use Descom\Payment\Events\TransitionFailed;
+use Descom\Payment\Events\TransactionPaid;
+use Descom\Payment\Events\TransactionDenied;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\TestCase;
-use Descom\Payment\Transition;
+use Descom\Payment\Transaction;
+use Descom\Payment\TransactionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Omnipay\OfflineDummy\App\App;
@@ -35,7 +36,7 @@ class CaptureNotificationTest extends TestCase
     {
         Event::fake();
 
-        $redirect = Transition::for($this->payment)->create(12, 1)->purchase([
+        $redirect = Transaction::for($this->payment)->create(12, 1)->purchase([
             'description' => 'Test purchase',
         ]);
 
@@ -49,19 +50,19 @@ class CaptureNotificationTest extends TestCase
             )
         )->assertStatus(204);
 
-        Event::assertDispatched(TransitionCompleted::class, function ($event) {
-            return $event->transitionModel()->id === 1
-                && $event->transitionModel()->status === 'success';
+        Event::assertDispatched(TransactionPaid::class, function ($event) {
+            return $event->transactionModel()->id === 1
+                && $event->transactionModel()->status === TransactionStatus::PAID;
         });
 
-        $this->assertTrue(Transition::find(1)->isSuccessful());
+        $this->assertTrue(Transaction::find(1)->isSuccessful());
     }
 
     public function testFailed()
     {
         Event::fake();
 
-        $redirect = Transition::for($this->payment)->create(12, 1)->purchase([
+        $redirect = Transaction::for($this->payment)->create(12, 1)->purchase([
             'description' => 'Test purchase',
         ]);
 
@@ -75,11 +76,11 @@ class CaptureNotificationTest extends TestCase
             )
         )->assertStatus(204);
 
-        Event::assertDispatched(TransitionFailed::class, function ($event) {
-            return $event->transitionModel()->id === 1
-                && $event->transitionModel()->status === 'denied';
+        Event::assertDispatched(TransactionDenied::class, function ($event) {
+            return $event->transactionModel()->id === 1
+                && $event->transactionModel()->status === TransactionStatus::DENIED;
         });
 
-        $this->assertTrue(Transition::find(1)->isDenied());
+        $this->assertTrue(Transaction::find(1)->isDenied());
     }
 }

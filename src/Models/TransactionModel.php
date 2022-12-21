@@ -2,6 +2,7 @@
 
 namespace Descom\Payment\Models;
 
+use Descom\Payment\TransactionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -14,9 +15,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $gateway_id
  * @property object $gateway_response
  */
-class TransitionModel extends Model
+class TransactionModel extends Model
 {
-    protected $table = 'payment_transitions';
+    protected $table = 'payment_transactions';
 
     protected $casts = [
         'amount' => 'double',
@@ -28,8 +29,8 @@ class TransitionModel extends Model
         'amount',
         'merchant_id',
         'gateway_request',
-        'source_type',
-        'source_id',
+        'model_type',
+        'model_id',
     ];
 
     public function payment(): BelongsTo
@@ -37,18 +38,18 @@ class TransitionModel extends Model
         return $this->belongsTo(PaymentModel::class, 'payment_id', null, 'payments');
     }
 
-    public function source(): MorphTo
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }
 
     public function isSuccessful(): bool
     {
-        return $this->status === 'success';
+        return $this->status === TransactionStatus::PAID;
     }
 
     public function isDenied(): bool
     {
-        return $this->status === 'denied';
+        return $this->status === TransactionStatus::DENIED;
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Descom\Payment\Events;
 
-use Descom\Payment\Models\TransitionModel;
+use Descom\Payment\Models\TransactionModel;
 
-abstract class TransitionCapture
+abstract class TransactionCapture
 {
-    public function __construct(private TransitionModel $model)
+    public function __construct(private TransactionModel $model)
     {
     }
 
@@ -20,7 +20,7 @@ abstract class TransitionCapture
         return $this->model->merchant_id;
     }
 
-    public function transitionModel(): TransitionModel
+    public function transactionModel(): TransactionModel
     {
         return $this->model;
     }

@@ -3,12 +3,12 @@
 namespace Descom\Payment\Builders;
 
 use Descom\Payment\Payment;
-use Descom\Payment\Transition;
+use Descom\Payment\Transaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-final class TransitionBuilder
+final class TransactionBuilder
 {
     private ?Model $sourceModel = null;
 
@@ -23,7 +23,7 @@ final class TransitionBuilder
         return $this;
     }
 
-    public function create(float $amount, string|int $merchantId, array $request = []): Transition
+    public function create(float $amount, string|int $merchantId, array $request = []): Transaction
     {
         $request = [
             'amount' => $amount,
@@ -41,12 +41,12 @@ final class TransitionBuilder
         }
 
         if ($this->sourceModel) {
-            $request['source_type'] = get_class($this->sourceModel);
-            $request['source_id'] = $this->sourceModel->getKey();
+            $request['model_type'] = get_class($this->sourceModel);
+            $request['model_id'] = $this->sourceModel->getKey();
         }
 
-        $transitionModel = $this->payment->paymentModel->transitions()->create($request);
+        $transactionModel = $this->payment->paymentModel->transactions()->create($request);
 
-        return new Transition($transitionModel);
+        return new Transaction($transactionModel);
     }
 }
