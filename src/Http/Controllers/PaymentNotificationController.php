@@ -12,8 +12,6 @@ class PaymentNotificationController extends Controller
     {
         $transactionId = (int)$request->input('transaction_id');
 
-        logger()->info('transition notification', $request->all());
-
         Transition::find($transactionId)->notifyPurchase($request->all());
 
         return response()->noContent();
