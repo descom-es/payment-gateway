@@ -41,8 +41,8 @@ final class TransitionBuilder
         }
 
         if ($this->sourceModel) {
-            $request['source_type'] = get_class($this->sourceModel);
-            $request['source_id'] = $this->sourceModel->getKey();
+            $request['model_type'] = get_class($this->sourceModel);
+            $request['model_id'] = $this->sourceModel->getKey();
         }
 
         $transitionModel = $this->payment->paymentModel->transitions()->create($request);

@@ -48,13 +48,13 @@ class TransitionTest extends TestCase
         $this->assertNotNull(TransitionModel::find($transition->id));
     }
 
-    public function testCreateModelWithSource()
+    public function testCreateModelWithRelation()
     {
         $transition = Transition::for($this->payment)
             ->model(new OrderModel())
             ->create(12, 1);
 
-        $this->assertEquals(OrderModel::class, $transition->source_type); // @phpstan-ignore-line
+        $this->assertEquals(OrderModel::class, $transition->model_type); // @phpstan-ignore-line
         $this->assertEquals((new OrderModel())->getKey(), $transition->id);
     }
 

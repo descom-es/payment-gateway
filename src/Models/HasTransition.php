@@ -6,6 +6,6 @@ trait HasTransition
 {
     public function transitions(): HasMany
     {
-        return $this->morphMany(TransitionModel::class, 'source');
+        return $this->morphMany(TransitionModel::class, 'model');
     }
 }

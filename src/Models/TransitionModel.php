@@ -28,8 +28,8 @@ class TransitionModel extends Model
         'amount',
         'merchant_id',
         'gateway_request',
-        'source_type',
-        'source_id',
+        'model_type',
+        'model_id',
     ];
 
     public function payment(): BelongsTo
@@ -37,7 +37,7 @@ class TransitionModel extends Model
         return $this->belongsTo(PaymentModel::class, 'payment_id', null, 'payments');
     }
 
-    public function source(): MorphTo
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }

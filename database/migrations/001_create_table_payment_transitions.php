@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('payment_transitions', function (Blueprint $table) {
             $table->id();
 
-            $table->nullableMorphs('source');
+            $table->nullableMorphs('model');
             $table->string('merchant_id')->index();
 
             $table->foreignId('payment_id')->constrained();
