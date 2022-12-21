@@ -51,7 +51,7 @@ class TransitionTest extends TestCase
     public function testCreateModelWithSource()
     {
         $transition = Transition::for($this->payment)
-            ->model(new OrderModel)
+            ->model(new OrderModel())
             ->create(12, 1);
 
         $this->assertEquals(OrderModel::class, $transition->source_type); // @phpstan-ignore-line
