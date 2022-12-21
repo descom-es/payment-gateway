@@ -4,7 +4,6 @@ namespace Descom\Payment\Tests\Feature;
 
 use Descom\Payment\Events\TransitionCompleted;
 use Descom\Payment\Events\TransitionFailed;
-use Descom\Payment\Models\TransitionModel;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transition;
@@ -31,7 +30,6 @@ class CaptureNotificationTest extends TestCase
             ])
             ->create('payment1');
     }
-
 
     public function testCompleted()
     {
