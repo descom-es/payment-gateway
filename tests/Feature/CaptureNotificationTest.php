@@ -2,8 +2,8 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Events\TransactionCompleted;
-use Descom\Payment\Events\TransactionFailed;
+use Descom\Payment\Events\TransactionPaid;
+use Descom\Payment\Events\TransactionDenied;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transaction;
@@ -50,7 +50,7 @@ class CaptureNotificationTest extends TestCase
             )
         )->assertStatus(204);
 
-        Event::assertDispatched(TransactionCompleted::class, function ($event) {
+        Event::assertDispatched(TransactionPaid::class, function ($event) {
             return $event->transactionModel()->id === 1
                 && $event->transactionModel()->status === TransactionStatus::PAID;
         });
@@ -76,7 +76,7 @@ class CaptureNotificationTest extends TestCase
             )
         )->assertStatus(204);
 
-        Event::assertDispatched(TransactionFailed::class, function ($event) {
+        Event::assertDispatched(TransactionDenied::class, function ($event) {
             return $event->transactionModel()->id === 1
                 && $event->transactionModel()->status === TransactionStatus::DENIED;
         });

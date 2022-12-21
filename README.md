@@ -86,5 +86,5 @@ $transaction = Transaction::for($payment)
 
 Create Listener to events:
 
-- `Descom\Payment\Events\TransactionCompleted`
-- `Descom\Payment\Events\TransactionFailed`
+- `Descom\Payment\Events\TransactionPaid`
+- `Descom\Payment\Events\TransactionDenied`

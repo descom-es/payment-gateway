@@ -2,8 +2,8 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Events\TransactionCompleted;
-use Descom\Payment\Events\TransactionFailed;
+use Descom\Payment\Events\TransactionPaid;
+use Descom\Payment\Events\TransactionDenied;
 use Descom\Payment\Models\TransactionModel;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\Support\OrderModel;
@@ -105,8 +105,8 @@ class TransactionTest extends TestCase
         ]);
 
         Event::assertDispatched(
-            TransactionFailed::class,
-            fn (TransactionFailed $event) => $event->transactionModel()->status === TransactionStatus::DENIED
+            TransactionDenied::class,
+            fn (TransactionDenied $event) => $event->transactionModel()->status === TransactionStatus::DENIED
         );
     }
 
@@ -127,8 +127,8 @@ class TransactionTest extends TestCase
         ]);
 
         Event::assertDispatched(
-            TransactionCompleted::class,
-            fn (TransactionCompleted $event) => $event->transactionModel()->status === TransactionStatus::PAID
+            TransactionPaid::class,
+            fn (TransactionPaid $event) => $event->transactionModel()->status === TransactionStatus::PAID
         );
     }
 }

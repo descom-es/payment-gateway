@@ -3,8 +3,8 @@
 namespace Descom\Payment;
 
 use Descom\Payment\Builders\TransactionBuilder;
-use Descom\Payment\Events\TransactionCompleted;
-use Descom\Payment\Events\TransactionFailed;
+use Descom\Payment\Events\TransactionPaid;
+use Descom\Payment\Events\TransactionDenied;
 use Descom\Payment\Models\TransactionModel;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
@@ -69,8 +69,8 @@ final class Transaction
         $this->transactionModel->save();
 
         $event = $response->isSuccessful()
-            ? new TransactionCompleted($this->transactionModel)
-            : new TransactionFailed($this->transactionModel);
+            ? new TransactionPaid($this->transactionModel)
+            : new TransactionDenied($this->transactionModel);
 
         event($event);
 
