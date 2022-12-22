@@ -32,9 +32,12 @@ use Omnipay\OfflineDummy\Gateway as OfflineDummyGateway;
 Payment::for(new OfflineDummyGateway())
             ->name('Method Name')
             ->config([
-                'notify_url' => 'http:/api.localhost/payment/gateway/notify',
                 'return_url' => 'http:/www.localhost/checkout/success',
                 'cancel_url' => 'http:/www.localhost/checkout/cancel',
+                'request' => [
+                    'notify_url' => 'http:/api.localhost/payment/paymentdemo/notify',
+                    'return_url' => 'http:/api.localhost/payment/paymentdemo/redirect',
+                ],
             ]))
             ->create('paymentdemo');
 ```
