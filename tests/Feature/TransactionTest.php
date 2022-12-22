@@ -29,6 +29,7 @@ class TransactionTest extends TestCase
             ->config([
                 'request' => [
                     'url_notify' => 'https://ok.makey',
+                    'url_return' => 'https://ok.makey/{transactionId}/redirect'
                 ],
             ])
             ->create('payment1');
@@ -69,6 +70,15 @@ class TransactionTest extends TestCase
         $this->assertEquals(1, $response->getData()['transaction_id']);
         $this->assertEquals(12.00, $response->getData()['amount']);
         $this->assertEquals('https://ok.makey', $response->getData()['url_notify']);
+    }
+
+    public function testRequestVariable()
+    {
+        $response = Transaction::for($this->payment)->create(12, 1)->purchase([
+            'description' => 'Test purchase',
+        ]);
+
+        $this->assertEquals('https://ok.makey/1/redirect', $response->getData()['url_return']);
     }
 
     public function testPurchaseFillRequestInModel()

@@ -37,6 +37,15 @@ final class Transaction
             ? json_decode(json_encode($this->payment->config->request), true)
             : [];
 
+        $paymentRequest = array_map(
+            fn ($value) => str_replace(
+                ['{transactionId}'],
+                [$this->transactionModel->id],
+                $value
+            ),
+            $paymentRequest
+        );
+
         $data = array_merge(
             $request,
             $paymentRequest,
