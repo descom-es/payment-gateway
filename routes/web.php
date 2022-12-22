@@ -11,6 +11,6 @@ Route::match(
 )->name('payment.notify');
 
 Route::get(
-    '/payment/{id}/redirect',
+    '/payment/{payment_key}/redirect',
     PaymentRedirectController::class
 )->name('payment.redirect');
