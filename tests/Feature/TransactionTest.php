@@ -29,7 +29,7 @@ class TransactionTest extends TestCase
             ->config([
                 'request' => [
                     'url_notify' => 'https://ok.makey',
-                    'url_return' => 'https://ok.makey/{transactionId}/redirect'
+                    'url_return' => 'https://ok.makey/{transactionId}/redirect',
                 ],
             ])
             ->create('payment1');
