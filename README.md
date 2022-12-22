@@ -36,7 +36,7 @@ Payment::for(new OfflineDummyGateway())
                 'cancel_url' => 'http:/www.localhost/checkout/cancel',
                 'request' => [
                     'notify_url' => 'http:/api.localhost/payment/paymentdemo/notify',
-                    'return_url' => 'http:/api.localhost/payment/{id}/redirect',
+                    'return_url' => 'http:/api.localhost/payment/{parameterId}/redirect',
                 ],
             ]))
             ->create('paymentdemo');
