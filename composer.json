@@ -15,7 +15,8 @@
         "league/omnipay": "^3.2"
     },
     "require-dev": {
-        "descom/omnipay-offline-dummy": "^1.2",
+        "descom/omnipay-offline-dummy": "^1.2.6",
+        "descom/omnipay-redsys": "^1.0",
         "friendsofphp/php-cs-fixer": "^3.4",
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.5",
