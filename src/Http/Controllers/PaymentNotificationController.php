@@ -19,7 +19,7 @@ class PaymentNotificationController extends Controller
 
         $responseTransformed = $this->unapplyTransformer($payment, $response);
 
-        $merchantId = $responseTransformed['transaction_id'] ?? $response->getTransactionId();
+        $merchantId = $responseTransformed['transaction_id'] ?? $this->getTransactionId($response);
         $paymentId = $payment->paymentModel->id;
 
         $transactionId = TransactionModel::where('merchant_id', $merchantId)
@@ -30,6 +30,16 @@ class PaymentNotificationController extends Controller
         Transaction::find($transactionId)->notifyPurchase($request->all());
 
         return response()->noContent();
+    }
+
+    private function getTransactionId($response)
+    {
+        if (!(method_exists($response, 'getTransactionId'))) {
+            throw new \Exception("Error CompletePurchased require getTransactionId method", 1);
+
+        }
+
+        return $response->getTransactionId();
     }
 
     private function getPayment(string $payment_key): Payment
