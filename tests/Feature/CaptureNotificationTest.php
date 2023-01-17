@@ -36,7 +36,7 @@ class CaptureNotificationTest extends TestCase
     {
         Event::fake();
 
-        $redirect = Transaction::for($this->payment)->create(12, 1)->purchase([
+        $redirect = Transaction::for($this->payment)->create(12, 'A01')->purchase([
             'description' => 'Test purchase',
         ]);
 
@@ -51,7 +51,7 @@ class CaptureNotificationTest extends TestCase
         )->assertStatus(204);
 
         Event::assertDispatched(TransactionPaid::class, function ($event) {
-            return $event->transactionModel()->id === 1
+            return $event->transactionModel()->merchant_id === 'A01'
                 && $event->transactionModel()->status === TransactionStatus::PAID;
         });
 

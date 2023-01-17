@@ -51,7 +51,7 @@ final class Transaction
             $paymentRequest,
             [
                 'amount' => $this->transactionModel->amount,
-                'transactionId' => $this->transactionModel->id,
+                'transactionId' => $this->transactionModel->merchant_id,
             ]
         );
 
