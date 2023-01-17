@@ -11,9 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name The name of the payment.
  * @property object $config The config of the payment.
  * @property PaymentModel $payment The payment model.
- * @property ?string $url_redirect_client_completed
- * @property ?string $url_redirect_client_failed
- * @property ?string $key_notify_url
+ * @property ?string $transformer
  */
 class PaymentModel extends Model
 {
@@ -28,9 +26,7 @@ class PaymentModel extends Model
         'gateway',
         'config',
         'name',
-        'key_notify_url',
-        'url_redirect_client_completed',
-        'url_redirect_client_failed',
+        'transformer',
     ];
 
     public function transactions(): HasMany
