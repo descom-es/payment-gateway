@@ -39,6 +39,7 @@ Payment::for(new OfflineDummyGateway())
                     'return_url' => 'http:/api.localhost/payment/{parameterId}/redirect',
                 ],
             ]))
+            ->transformer() // Optional, you can use your own transformer with interface Descom\Payment\Transformers\Transformer
             ->create('paymentdemo');
 ```
 

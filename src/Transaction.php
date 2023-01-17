@@ -55,6 +55,8 @@ final class Transaction
             ]
         );
 
+        $data = $this->applyTransformer($data);
+
         $this->transactionModel->gateway_request = $data;
 
         return $this->gateway()->purchase($data)->send();
@@ -106,5 +108,19 @@ final class Transaction
         $paymentKey = $this->transactionModel->payment->key;
 
         return Payment::find($paymentKey)->gateway();
+    }
+
+    private function applyTransformer(array $request): array
+    {
+        $transformer = $this->payment->transformer ?? null;
+
+
+        if ($transformer) {
+            $transformer = new $transformer();
+
+            return $transformer->apply($request);
+        }
+
+        return $request;
     }
 }
