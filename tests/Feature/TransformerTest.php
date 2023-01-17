@@ -2,11 +2,8 @@
 
 namespace Descom\Payment\Tests\Feature;
 
-use Descom\Payment\Events\TransactionDenied;
 use Descom\Payment\Events\TransactionPaid;
-use Descom\Payment\Models\TransactionModel;
 use Descom\Payment\Payment;
-use Descom\Payment\Tests\Support\OrderModel;
 use Descom\Payment\Tests\Support\TransformerCustom;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transaction;

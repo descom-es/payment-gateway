@@ -17,7 +17,7 @@ class PaymentNotificationController extends Controller
         $response = $this->unapplyTransformer($payment, $request->all());
 
         $merchantId = $response['transaction_id'];
-        $paymentId =$payment->paymentModel->id;
+        $paymentId = $payment->paymentModel->id;
 
         $transactionId = TransactionModel::where('merchant_id', $merchantId)
             ->where('payment_id', $paymentId)
