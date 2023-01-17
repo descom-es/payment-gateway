@@ -3,6 +3,7 @@
 namespace Descom\Payment\Tests\Support;
 
 use Descom\Payment\Transformers\Transformer;
+use Omnipay\Common\Message\ResponseInterface;
 
 class TransformerCustom implements Transformer
 {
@@ -15,10 +16,14 @@ class TransformerCustom implements Transformer
         return $request;
     }
 
-    public function unapply(array $response): array
+    public function unapply(ResponseInterface $response): array
     {
-        $response['transaction_id'] = (int)str_replace('Y', '', $response['transaction_id']);
+        if (!method_exists($response, 'getTransactionId')) {
+            return [];
+        }
 
-        return $response;
+        return [
+            'transaction_id' => (int)str_replace('Y', '', $response->getTransactionId()),
+        ];
     }
 }

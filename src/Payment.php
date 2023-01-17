@@ -7,6 +7,7 @@ use Descom\Payment\Builders\TransactionBuilder;
 use Descom\Payment\Models\PaymentModel;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\GatewayInterface;
+use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Omnipay;
 
 /**
@@ -61,6 +62,15 @@ class Payment
         }
 
         return $this->payment->$key ?? null;
+    }
+
+    public function responseCompletePurchase(array $request): ResponseInterface
+    {
+        $paymentRequest = isset($this->payment->config->request)
+            ? json_decode(json_encode($this->payment->config->request), true)
+            : [];
+
+        return $this->gateway()->completePurchase(array_merge($paymentRequest, $request))->send();
     }
 
     private function objectToArray(array|object $object): array

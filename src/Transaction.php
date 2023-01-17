@@ -64,11 +64,7 @@ final class Transaction
 
     public function redirectPurchase(array $request): ResponseInterface
     {
-        $paymentRequest = isset($this->payment->config->request)
-            ? json_decode(json_encode($this->payment->config->request), true)
-            : [];
-
-        return $this->gateway()->completePurchase(array_merge($paymentRequest, $request))->send();
+        return Payment::find($this->payment->key)->responseCompletePurchase($request);
     }
 
     public function notifyPurchase(array $request): ResponseInterface

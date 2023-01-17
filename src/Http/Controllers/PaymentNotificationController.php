@@ -7,6 +7,7 @@ use Descom\Payment\Payment;
 use Descom\Payment\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Omnipay\Common\Message\ResponseInterface;
 
 class PaymentNotificationController extends Controller
 {
@@ -14,9 +15,11 @@ class PaymentNotificationController extends Controller
     {
         $payment = $this->getPayment($payment_key);
 
-        $response = $this->unapplyTransformer($payment, $request->all());
+        $response = $payment->responseCompletePurchase($request->all());
 
-        $merchantId = $response['transaction_id'];
+        $responseTransformed = $this->unapplyTransformer($payment, $response);
+
+        $merchantId = $responseTransformed['transaction_id'] ?? $this->getTransactionId($response);
         $paymentId = $payment->paymentModel->id;
 
         $transactionId = TransactionModel::where('merchant_id', $merchantId)
@@ -24,14 +27,30 @@ class PaymentNotificationController extends Controller
             ->firstOrFail()
             ->id;
 
-        Transaction::find($transactionId)->notifyPurchase($response);
+        Transaction::find($transactionId)->notifyPurchase($request->all());
 
         return response()->noContent();
     }
 
-    private function unapplyTransformer(Payment $payment, array $response): array
+    private function getTransactionId($response)
+    {
+        if (!(method_exists($response, 'getTransactionId'))) {
+            throw new \Exception("Error CompletePurchased require getTransactionId method", 1);
+
+        }
+
+        return $response->getTransactionId();
+    }
+
+    private function getPayment(string $payment_key): Payment
+    {
+        return Payment::find($payment_key);
+    }
+
+    private function unapplyTransformer(Payment $payment, ResponseInterface $response): array
     {
         $transformer = $payment->transformer ?? null;
+
 
         if ($transformer) {
             $transformer = new $transformer();
@@ -39,11 +58,6 @@ class PaymentNotificationController extends Controller
             return $transformer->unapply($response);
         }
 
-        return $response;
-    }
-
-    private function getPayment(string $payment_key): Payment
-    {
-        return Payment::find($payment_key);
+        return [];
     }
 }
