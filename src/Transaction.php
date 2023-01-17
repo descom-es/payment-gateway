@@ -64,12 +64,20 @@ final class Transaction
 
     public function redirectPurchase(array $request): ResponseInterface
     {
-        return $this->gateway()->completePurchase($request)->send();
+        $paymentRequest = isset($this->payment->config->request)
+            ? json_decode(json_encode($this->payment->config->request), true)
+            : [];
+
+        return $this->gateway()->completePurchase(array_merge($paymentRequest, $request))->send();
     }
 
     public function notifyPurchase(array $request): ResponseInterface
     {
-        $response = $this->redirectPurchase($request);
+        $paymentRequest = isset($this->payment->config->request)
+            ? json_decode(json_encode($this->payment->config->request), true)
+            : [];
+
+        $response = $this->redirectPurchase(array_merge($paymentRequest, $request));
 
         $this->transactionModel->gateway_id = $response->getTransactionReference();
         $this->transactionModel->gateway_response = $response->getData();
