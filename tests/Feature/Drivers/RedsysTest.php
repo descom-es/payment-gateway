@@ -10,7 +10,6 @@ use Descom\Payment\Transaction;
 use Descom\Payment\TransactionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use Omnipay\OfflineDummy\App\App;
 use Omnipay\Redsys\Gateway;
 
 class RedsysTest extends TestCase
@@ -37,7 +36,6 @@ class RedsysTest extends TestCase
             ->transformer(new TransformerCustom())
             ->create('payment1');
     }
-
 
     public function testCapturePaid()
     {

@@ -34,9 +34,8 @@ class PaymentNotificationController extends Controller
 
     private function getTransactionId($response)
     {
-        if (!(method_exists($response, 'getTransactionId'))) {
+        if (! (method_exists($response, 'getTransactionId'))) {
             throw new \Exception("Error CompletePurchased require getTransactionId method", 1);
-
         }
 
         return $response->getTransactionId();

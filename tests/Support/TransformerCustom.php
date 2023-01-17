@@ -18,7 +18,7 @@ class TransformerCustom implements Transformer
 
     public function unapply(ResponseInterface $response): array
     {
-        if (!method_exists($response, 'getTransactionId')) {
+        if (! method_exists($response, 'getTransactionId')) {
             return [];
         }
 
