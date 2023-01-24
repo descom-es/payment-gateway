@@ -18,7 +18,7 @@ class PaymentModel extends Model
     protected $table = 'payments';
 
     protected $casts = [
-        'config' => 'object',
+        'config' => 'encrypted:object',
     ];
 
     protected $fillable = [
