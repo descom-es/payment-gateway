@@ -31,7 +31,7 @@ class PaymentRedirectController extends Controller
 
     private function replaceVariables(string $url, Transaction $transaction): string
     {
-        $url = str_replace('{transactionId}', $transaction->id, $url);
+        $url = str_replace('{transactionId}', (string)$transaction->id, $url);
         $url = str_replace('{merchantId}', $transaction->merchant_id, $url);
         $url = str_replace('{paymentId}', $transaction->payment_id, $url);
 

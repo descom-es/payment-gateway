@@ -13,6 +13,7 @@ use Omnipay\Common\Message\ResponseInterface;
  * @property int $id
  * @property string|float $amount
  * @property string $merchant_id
+ * @property string $payment_id
  * @property \Descom\Payment\Models\PaymentModel $payment  Retrieve payment model
  */
 final class Transaction
