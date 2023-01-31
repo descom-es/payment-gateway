@@ -2,12 +2,9 @@
 
 namespace Descom\Payment\Tests\Feature\Http\Controllers;
 
-use Descom\Payment\Events\TransactionDenied;
-use Descom\Payment\Events\TransactionPaid;
 use Descom\Payment\Payment;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transaction;
-use Descom\Payment\TransactionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Omnipay\OfflineDummy\App\App;
@@ -53,7 +50,5 @@ class PaymentRedirectControllerTest extends TestCase
             )
         )->assertStatus(302)
         ->assertRedirect('http://localhost/payment/1/cancel');
-
-
     }
 }
