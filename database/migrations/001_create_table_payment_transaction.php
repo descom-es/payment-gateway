@@ -35,8 +35,6 @@ return new class extends Migration
             $table->json('gateway_response')->nullable();
 
             $table->timestamps();
-
-            $table->unique(['payment_id', 'merchant_id']);
         });
     }
 
