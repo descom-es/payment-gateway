@@ -53,6 +53,7 @@ final class Transaction
             [
                 'amount' => $this->transactionModel->amount,
                 'transactionId' => $this->transactionModel->merchant_id,
+                'transactionReference' => $this->transactionModel->id,
             ]
         );
 

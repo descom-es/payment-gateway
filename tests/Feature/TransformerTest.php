@@ -41,7 +41,7 @@ class TransformerTest extends TestCase
         ]);
 
         $this->assertTrue($response->isRedirect());
-        $this->assertEquals('0000Y1', $response->getData()['transaction_id']);
+        $this->assertEquals('0000Y1-00001', $response->getData()['transaction_id']);
         $this->assertEquals(12.00, $response->getData()['amount']);
         $this->assertEquals('https://ok.makey', $response->getData()['url_notify']);
     }

@@ -10,8 +10,15 @@ class TransformerCustom implements Transformer
     public function apply(array $request): array
     {
         $transactionId = $request['transactionId'];
-        $transactionId = sprintf('%05d', $transactionId);
-        $request['transactionId'] = preg_replace('/(\d{4})(\d+)/', '${1}Y${2}', $transactionId);
+        $transactionReference = $request['transactionReference'] ?? null;
+
+        if ($transactionReference) {
+            $transactionId = sprintf('%05d-%05d', $transactionId, $transactionReference);
+        } else {
+            $transactionId = sprintf('%05d', $transactionId);
+        }
+
+        $request['transactionId'] = preg_replace('/^(\d{4})(\d+)/', '${1}Y${2}', $transactionId);
 
         return $request;
     }
@@ -22,8 +29,14 @@ class TransformerCustom implements Transformer
             return [];
         }
 
+        $data = explode(',', str_replace('Y', '', $response->getTransactionId()));
+
+        $transactionId = (int)$data[0];
+        $transactionReference = $data[1] ?? null;
+
         return [
-            'transaction_id' => (int)str_replace('Y', '', $response->getTransactionId()),
+            'transaction_id' => $transactionId,
+            'transaction_reference' => $transactionReference,
         ];
     }
 }
