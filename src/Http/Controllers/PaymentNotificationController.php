@@ -19,10 +19,10 @@ class PaymentNotificationController extends Controller
 
         $responseTransformed = $this->unapplyTransformer($payment, $response);
 
-        $merchantId = $responseTransformed['transaction_id'] ?? $this->getTransactionId($response);
+        $transactionId = $responseTransformed['transaction_id'] ?? $this->getTransactionId($response);
         $paymentId = $payment->paymentModel->id;
 
-        $transactionId = TransactionModel::where('merchant_id', $merchantId)
+        $transactionId = TransactionModel::where('id', $transactionId)
             ->where('payment_id', $paymentId)
             ->firstOrFail()
             ->id;
