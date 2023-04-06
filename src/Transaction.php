@@ -60,6 +60,7 @@ final class Transaction
         $data = $this->applyTransformer($data);
 
         $this->transactionModel->gateway_request = $data;
+        $this->transactionModel->save();
 
         return $this->gateway()->purchase($data)->send();
     }
