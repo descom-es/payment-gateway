@@ -23,13 +23,13 @@ class PaymentNotificationController extends Controller
         $transactionModelId = $responseTransformed['transaction_model_id'] ?? null;
         $paymentId = $payment->paymentModel->id;
 
+        $transactionModelQuery = TransactionModel::where('merchant_id', $merchantId)->where('payment_id', $paymentId);
 
-        $transactionId = ! is_null($transactionModelId)
-            ? TransactionModel::findOrFail($transactionModelId)->id
-            : TransactionModel::where('merchant_id', $merchantId)
-            ->where('payment_id', $paymentId)
-            ->firstOrFail()
-            ->id;
+        if (!is_null($transactionModelId)) {
+            $transactionModelQuery->where('id', $transactionModelId);
+        }
+
+        $transactionId = $transactionModelQuery->firstOrFail()->id;
 
         Transaction::find($transactionId)->notifyPurchase($request->all());
 
