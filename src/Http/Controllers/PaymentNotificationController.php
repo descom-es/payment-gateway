@@ -25,7 +25,7 @@ class PaymentNotificationController extends Controller
 
         $transactionModelQuery = TransactionModel::where('merchant_id', $merchantId)->where('payment_id', $paymentId);
 
-        if (!is_null($transactionModelId)) {
+        if (! is_null($transactionModelId)) {
             $transactionModelQuery->where('id', $transactionModelId);
         }
 
