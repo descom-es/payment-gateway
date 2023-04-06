@@ -24,7 +24,7 @@ class PaymentNotificationController extends Controller
         $paymentId = $payment->paymentModel->id;
 
 
-        $transactionId = !is_null($transactionModelId)
+        $transactionId = ! is_null($transactionModelId)
             ? TransactionModel::findOrFail($transactionModelId)->id
             : TransactionModel::where('merchant_id', $merchantId)
             ->where('payment_id', $paymentId)
