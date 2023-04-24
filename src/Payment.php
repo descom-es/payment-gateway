@@ -16,6 +16,7 @@ use Omnipay\Omnipay;
  * @property string $name  The name of the payment.
  * @property object|array $config  The config of the payment.
  * @property PaymentModel $paymentModel  The payment model.
+ * @property ?string $transformer  The transformer of the payment.
  */
 class Payment
 {
