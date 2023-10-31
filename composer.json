@@ -17,6 +17,7 @@
     "require-dev": {
         "descom/omnipay-offline-dummy": "^1.2.6",
         "descom/omnipay-redsys": "^1.0",
+        "descom/omnipay-bank-transfer": "dev-master",
         "friendsofphp/php-cs-fixer": "^3.4",
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.5",
@@ -38,6 +39,12 @@
             "Descom\\Payment\\Tests\\": "tests"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../omnipay-bank-transfer"
+        }
+    ],
     "scripts": {
         "test": "./vendor/bin/testbench package:test --parallel --no-coverage"
     },
