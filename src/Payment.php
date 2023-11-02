@@ -14,6 +14,7 @@ use Omnipay\Omnipay;
  * @property string $key  The key of the payment.
  * @property string $gateway  The gateway of the payment.
  * @property string $name  The name of the payment.
+ * @property string $visibility  The visibility of the payment.
  * @property object|array $config  The config of the payment.
  * @property PaymentModel $paymentModel  The payment model.
  */
