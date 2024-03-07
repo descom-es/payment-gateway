@@ -21,7 +21,7 @@
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.5|^8.0",
         "phpstan/phpstan": "^1.2",
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": " ^9.5|^10.0"
     },
     "suggest": {
         "descom/omnipay-offline-dummy": "Required to use demo the offline gateway",
