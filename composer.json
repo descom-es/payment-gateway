@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.0|^10.0",
         "league/omnipay": "^3.2"
     },
     "require-dev": {
@@ -19,7 +19,7 @@
         "descom/omnipay-redsys": "^1.1",
         "friendsofphp/php-cs-fixer": "^3.4",
         "nunomaduro/larastan": "^2.0",
-        "orchestra/testbench": "^7.5",
+        "orchestra/testbench": "^7.5|^8.0",
         "phpstan/phpstan": "^1.2",
         "phpunit/phpunit": "^9.3"
     },
