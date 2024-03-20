@@ -8,43 +8,46 @@ on:
 
 jobs:
   phpunit:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        php-versions: ['8.2', '8.1', '8.0']
+        php: [8.0, 8.1, 8.2, 8.3]
+        laravel: [9.*]
+        include:
+          - laravel: 9.*
+            testbench: 7.*
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-        extensions: curl, pdo, sqlite, pdo_sqlite
-        coverage: xdebug
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, pdo, sqlite, pdo_sqlite
 
-    - name: Install SQLite 3
-      run: sudo apt-get install sqlite3
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install sqlite3
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ matrix.php-versions }}-2
-        restore-keys: |
-          ${{ runner.os }}-php-${{ matrix.php-versions }}-2
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: |
-        composer install
-        composer dump
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction --no-suggest
 
-    - name: Run test phpunit
-      run: vendor/bin/phpunit
+      - name: Run test phpunit
+        run: vendor/bin/phpunit --stop-on-error --stop-on-failure
