@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [8.0, 8.1, 8.2, 8.3]
+        php: [8.2, 8.3]
         laravel: [9.*, 10.*, 11.*]
         include:
           - laravel: 9.*
@@ -51,7 +51,7 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --prefer-stable --prefer-dist --no-interaction --no-suggest
+          composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run test phpunit
         run: vendor/bin/phpunit --stop-on-error --stop-on-failure
