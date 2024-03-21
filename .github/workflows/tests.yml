@@ -22,6 +22,8 @@ jobs:
           - laravel: 11.*
             testbench: 9.*
         exclude:
+          - laravel: 9.*
+            php: 8.3
           - laravel: 10.*
             php: 8.0
           - laravel: 11.*
@@ -61,4 +63,4 @@ jobs:
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run test phpunit
-        run: vendor/bin/phpunit --stop-on-error --stop-on-failure
+        run: vendor/bin/phpunit #--stop-on-error --stop-on-failure
