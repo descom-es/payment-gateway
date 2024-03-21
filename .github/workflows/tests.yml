@@ -39,6 +39,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, pdo, sqlite, pdo_sqlite
+          coverage: xdebug
 
       - name: Install Dependencies
         run: |
