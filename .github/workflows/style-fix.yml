@@ -9,13 +9,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php: [8.0, 8.1, 8.2, 8.3]
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: ${{ matrix.php }}
         extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, exif
         coverage: xdebug
 
@@ -24,9 +28,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: vendor
-        key: ${{ runner.os }}-php-${{ matrix.php-versions }}-2
+        key: ${{ runner.os }}-php-${{ matrix.php }}-2
         restore-keys: |
-          ${{ runner.os }}-php-${{ matrix.php-versions }}-2
+          ${{ runner.os }}-php-${{ matrix.php }}-2
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
