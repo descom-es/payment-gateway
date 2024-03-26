@@ -20,7 +20,7 @@ class PaymentRedirectController extends Controller
             return redirect()->away($url);
         }
 
-        if (! $response->isSuccessful() && $transaction->payment->config->cancel_url) {
+        if (!$response->isSuccessful() && $transaction->payment->config->cancel_url) {
             $url = $this->replaceVariables($transaction->payment->config->cancel_url, $transaction);
 
             return redirect()->away($url);
