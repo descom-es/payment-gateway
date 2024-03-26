@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  test:
+  phpunit:
 
     runs-on: ubuntu-latest
 
@@ -59,4 +59,4 @@ jobs:
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run test phpunit
-        run: vendor/bin/phpunit #--stop-on-error --stop-on-failure
+        run: vendor/bin/phpunit --stop-on-error --stop-on-failure
