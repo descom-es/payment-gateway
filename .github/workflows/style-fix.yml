@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  style:
+  style-fix:
 
     runs-on: ubuntu-latest
 
