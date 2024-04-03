@@ -1,4 +1,4 @@
-name: tests
+name: Tests
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 
 jobs:
   phpunit:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -36,10 +35,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, pdo, sqlite, pdo_sqlite
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
+          coverage: none
 
-      - name: Install Dependencies
-        run: sudo apt-get install sqlite3
+      - name: Install SQLite 3
+        run: |
+          sudo apt-get update
+          sudo apt-get install sqlite3
 
       - name: Validate composer.json
         run: composer validate
