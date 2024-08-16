@@ -78,4 +78,18 @@ class Payment
     {
         return is_array($object) ? $object : json_decode(json_encode($object), true);
     }
+
+    public function unapplyTransformer(ResponseInterface $response): array
+    {
+        $transformer = $this->transformer ?? null;
+
+
+        if ($transformer) {
+            $transformer = new $transformer();
+
+            return $transformer->unapply($response);
+        }
+
+        return [];
+    }
 }

@@ -7,7 +7,6 @@ use Descom\Payment\Payment;
 use Descom\Payment\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Omnipay\Common\Message\ResponseInterface;
 
 class PaymentNotificationController extends Controller
 {
@@ -17,7 +16,7 @@ class PaymentNotificationController extends Controller
 
         $response = $payment->responseCompletePurchase($request->all());
 
-        $responseTransformed = $this->unapplyTransformer($payment, $response);
+        $responseTransformed = $payment->unapplyTransformer($response);
 
         $merchantId = $responseTransformed['transaction_id'] ?? $this->getTransactionId($response);
         $transactionModelId = $responseTransformed['transaction_model_id'] ?? null;
@@ -48,19 +47,5 @@ class PaymentNotificationController extends Controller
     private function getPayment(string $payment_key): Payment
     {
         return Payment::find($payment_key);
-    }
-
-    private function unapplyTransformer(Payment $payment, ResponseInterface $response): array
-    {
-        $transformer = $payment->transformer ?? null;
-
-
-        if ($transformer) {
-            $transformer = new $transformer();
-
-            return $transformer->unapply($response);
-        }
-
-        return [];
     }
 }
