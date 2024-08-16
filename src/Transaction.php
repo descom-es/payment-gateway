@@ -78,6 +78,13 @@ final class Transaction
 
         $response = $this->redirectPurchase(array_merge($paymentRequest, $request));
 
+        $this->responsePurchase($response);
+
+        return $response;
+    }
+
+    public function responsePurchase(ResponseInterface $response): void
+    {
         $this->transactionModel->gateway_id = $response->getTransactionReference();
         $this->transactionModel->gateway_response = $response->getData();
         $this->transactionModel->status = $response->isSuccessful()
@@ -91,8 +98,6 @@ final class Transaction
             : new TransactionDenied($this->transactionModel);
 
         event($event);
-
-        return $response;
     }
 
     public function __get(string $param)

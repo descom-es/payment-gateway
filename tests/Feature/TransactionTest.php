@@ -10,10 +10,14 @@ use Descom\Payment\Tests\Support\OrderModel;
 use Descom\Payment\Tests\TestCase;
 use Descom\Payment\Transaction;
 use Descom\Payment\TransactionStatus;
+use Descom\Redsys\Merchants\MerchantBuilder;
+use Descom\Redsys\Parameters;
+use Descom\Redsys\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Omnipay\OfflineDummy\App\App;
 use Omnipay\OfflineDummy\Gateway as OfflineDummyGateway;
+use Omnipay\Redsys\Message\Rest\BuildFromRedsysResponse;
 
 class TransactionTest extends TestCase
 {
@@ -135,6 +139,87 @@ class TransactionTest extends TestCase
             'amount' => 12.00,
             'status' => App::STATUS_SUCCESS,
         ]);
+
+        Event::assertDispatched(
+            TransactionPaid::class,
+            fn (TransactionPaid $event) => $event->transactionModel()->status === TransactionStatus::PAID
+        );
+    }
+
+    public function testPurchaseFillRequestInModelWithResponse()
+    {
+        Event::fake();
+
+        $transaction = Transaction::for($this->payment)->create(12, 1);
+
+        $transaction->purchase([
+            'description' => 'Test purchase',
+        ]);
+
+        $transaction->responsePurchase(new BuildFromRedsysResponse(new Response(
+            MerchantBuilder::testing(),
+            new Parameters([
+                'Ds_MerchantCode' => '999008881',
+                'Ds_Terminal' => '1',
+                'Ds_Response' => '0000',
+                'Ds_Amount' => '145',
+                'Ds_Order' => '12346',
+                'Ds_AuthorisationCode' => '145',
+            ])
+        )));
+
+        $this->assertNotEmpty(TransactionModel::find(1)->gateway_request);
+    }
+
+    public function testPurchaseCompletedFailedWithResponse()
+    {
+        Event::fake();
+
+        $transaction = Transaction::for($this->payment)->create(12, 1);
+
+        $transaction->purchase([
+            'description' => 'Test purchase',
+        ]);
+
+        $transaction->responsePurchase(new BuildFromRedsysResponse(new Response(
+            MerchantBuilder::testing(),
+            new Parameters([
+                'Ds_MerchantCode' => '999008881',
+                'Ds_Terminal' => '1',
+                'Ds_Response' => '1000',
+                'Ds_Amount' => '145',
+                'Ds_Order' => '12346',
+                'Ds_AuthorisationCode' => '145',
+            ])
+        )));
+
+        Event::assertDispatched(
+            TransactionDenied::class,
+            fn (TransactionDenied $event) => $event->transactionModel()->status === TransactionStatus::DENIED
+        );
+    }
+
+    public function testPurchaseCompletedCompletedWithResponse()
+    {
+        Event::fake();
+
+        $transaction = Transaction::for($this->payment)->create(12, 1);
+
+        $transaction->purchase([
+            'description' => 'Test purchase',
+        ]);
+
+        $transaction->responsePurchase(new BuildFromRedsysResponse(new Response(
+            MerchantBuilder::testing(),
+            new Parameters([
+                'Ds_MerchantCode' => '999008881',
+                'Ds_Terminal' => '1',
+                'Ds_Response' => '0000',
+                'Ds_Amount' => '145',
+                'Ds_Order' => '12346',
+                'Ds_AuthorisationCode' => '145',
+            ])
+        )));
 
         Event::assertDispatched(
             TransactionPaid::class,
