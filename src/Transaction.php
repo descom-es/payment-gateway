@@ -115,6 +115,11 @@ final class Transaction
         return $this->transactionModel->isDenied();
     }
 
+    public function model(): TransactionModel
+    {
+        return $this->transactionModel;
+    }
+
     private function gateway(): GatewayInterface
     {
         $paymentKey = $this->transactionModel->payment->key;
