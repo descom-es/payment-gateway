@@ -15,16 +15,16 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.3
 
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-8.4-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-php-8.3-${{ hashFiles('**/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-php-8.4-
+            ${{ runner.os }}-php-8.3-
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
