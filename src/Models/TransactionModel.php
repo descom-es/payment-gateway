@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property object|array $gateway_request
  * @property string $gateway_id
  * @property object $gateway_response
+ * @property PaymentModel $payment
  */
 class TransactionModel extends Model
 {

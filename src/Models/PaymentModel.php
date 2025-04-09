@@ -29,8 +29,14 @@ class PaymentModel extends Model
         'transformer',
     ];
 
+    /**
+     * Get the transactions for the payment.
+     *
+     * @return HasMany<TransactionModel, PaymentModel>
+     */
     public function transactions(): HasMany
     {
+        /** @var HasMany<TransactionModel, PaymentModel> */
         return $this->hasMany(TransactionModel::class, 'payment_id');
     }
 }
