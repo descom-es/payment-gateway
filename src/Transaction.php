@@ -41,7 +41,7 @@ final class Transaction
         $paymentRequest = array_map(
             fn ($value) => str_replace(
                 ['{transactionId}'],
-                [$this->transactionModel->id],
+                [(string) $this->transactionModel->id],
                 $value
             ),
             $paymentRequest
